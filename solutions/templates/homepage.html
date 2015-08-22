@@ -1,5 +1,47 @@
 {% extends "base.html" %}
 
 {% block primary_content %}
-    <p>Hello world</p>
+<form action="">
+    <input type="search" name="term" value="{{ request.GET.term }}">
+    <input type="submit">
+</form>
+
+{% if data %}
+<script type="text/javascript">
+window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer", {
+        zoomEnabled: true,
+        title: {
+            text: "Articles published about {{ request.GET.term }} per year",
+            fontSize: 14,
+        },
+        axisX: {
+            labelFontSize: 14,
+            titleFontSize: 14,
+        },
+        axisY: {
+            labelFontSize: 14,
+            titleFontSize: 14,
+        },
+        data: [
+            {
+                /*** Change type "column" to "bar", "area", "line" or "pie"***/
+                type: "column",
+                dataPoints: [
+                    {% for key, value in data.items %}
+                        {
+                            label: "{{ key }}",
+                            y: {{ value }}
+                        }{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ]
+            }
+        ]
+    });
+
+    chart.render();
+}
+</script>
+<div id="chartContainer" style="height: 700px; width: 100%;"></div>
+{% endif %}
 {% endblock primary_content %}
