@@ -11,11 +11,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Resource',
+            name='SearchResult',
             fields=[
-                ('pmid', models.PositiveIntegerField(serialize=False, primary_key=True)),
-                ('date_created', models.DateField(null=True, blank=True)),
-                ('date_revised', models.DateField(null=True, blank=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('term', models.CharField(max_length=100)),
+                ('year', models.PositiveIntegerField()),
+                ('num_results', models.IntegerField()),
             ],
         ),
     ]

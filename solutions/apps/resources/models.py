@@ -1,18 +1,12 @@
 from django.db import models
 
 
-class Resource(models.Model):
+class SearchResult(models.Model):
 
-    pmid = models.PositiveIntegerField(
-        primary_key=True,
+    term = models.CharField(
+        max_length=100,
     )
 
-    date_created = models.DateField(
-        blank=True,
-        null=True,
-    )
+    year = models.PositiveIntegerField()
 
-    date_revised = models.DateField(
-        blank=True,
-        null=True,
-    )
+    num_results = models.IntegerField()
