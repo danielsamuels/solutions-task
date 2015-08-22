@@ -114,6 +114,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.expanduser("~/Sites/solutions/static")
+
+STATICFILES_DIRS = (
+    os.path.join(SITE_ROOT, "static"),
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.expanduser("~/Sites/solutions/media")
 
 # General application configuration
 NCBI_BASE_URL = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/'
