@@ -9,7 +9,9 @@ class HomepageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
 
-        ncbi = NCBI()
-        print ncbi.search('asthma')
+        if self.request.GET.get('term', False):
+            ncbi = NCBI()
 
+            qs = ncbi.search(self.request.GET['term'])
+            context['data'] = qs
         return context
