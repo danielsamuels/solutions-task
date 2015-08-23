@@ -9,3 +9,9 @@
   * **Note**: You may need to update the database configuration in `solutions/settings/base.py`.
 * `./manage.py runserver_plus`
 * Go to <http://127.0.0.1:8000/>
+
+##### Key files
+
+* solutions/utils/ncbi.py
+* solutions/apps/resources/views.py
+* solutions/templates/homepage.html
