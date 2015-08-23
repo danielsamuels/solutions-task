@@ -9,12 +9,12 @@
 
     <label class="half-width">
         <span>From year:</span>
-        <input type="number" name="min_year" min="1700" value="{{ request.GET.min_year|default:1990 }}">
+        <input type="number" name="min_year" min="1700" max="{% now 'Y' %}" value="{{ request.GET.min_year|default:1990 }}">
     </label>
 
     <label class="half-width">
         <span>From year:</span>
-        <input type="number" name="max_year" min="1700" value="{{ request.GET.max_year|default:2015 }}">
+        <input type="number" name="max_year" min="1700" max="{% now 'Y' %}" value="{{ request.GET.max_year|default:2015 }}">
     </label>
 
     <input type="submit" value="Search">
