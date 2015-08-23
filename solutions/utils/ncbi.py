@@ -120,7 +120,7 @@ class NCBI(object):
                 year -= 1
                 continue
             else:
-                year -= 1
                 count_per_year[year] = obj.num_results
+                year -= 1
 
         return count_per_year
