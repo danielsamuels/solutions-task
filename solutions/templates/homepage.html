@@ -2,46 +2,88 @@
 
 {% block primary_content %}
 <form action="">
-    <input type="search" name="term" value="{{ request.GET.term }}">
-    <input type="submit">
+    <label class="full-width">
+        <span>Search term:</span>
+        <input type="search" name="term" placeholder="Please enter a disease of interest.." value="{{ request.GET.term }}">
+    </label>
+
+    <label class="half-width">
+        <span>From year:</span>
+        <input type="number" name="min_year" min="1700" value="{{ request.GET.min_year|default:1990 }}">
+    </label>
+
+    <label class="half-width">
+        <span>From year:</span>
+        <input type="number" name="max_year" min="1700" value="{{ request.GET.max_year|default:2015 }}">
+    </label>
+
+    <input type="submit" value="Search">
 </form>
 
-{% if data %}
-<script type="text/javascript">
-window.onload = function () {
-    var chart = new CanvasJS.Chart("chartContainer", {
-        zoomEnabled: true,
-        title: {
-            text: "Articles published about {{ request.GET.term }} per year",
-            fontSize: 14,
-        },
-        axisX: {
-            labelFontSize: 14,
-            titleFontSize: 14,
-        },
-        axisY: {
-            labelFontSize: 14,
-            titleFontSize: 14,
-        },
-        data: [
-            {
-                /*** Change type "column" to "bar", "area", "line" or "pie"***/
-                type: "column",
-                dataPoints: [
-                    {% for key, value in data.items %}
-                        {
-                            label: "{{ key }}",
-                            y: {{ value }}
-                        }{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                ]
-            }
-        ]
-    });
-
-    chart.render();
-}
-</script>
+<progress max="100" value="0" id="dataProgress" style="width: 100%;"></progress>
 <div id="chartContainer" style="height: 700px; width: 100%;"></div>
-{% endif %}
+
+<script type="text/javascript">
+$(function() {
+    var estimate = {{ estimate }},
+        start_time = new Date(),
+        progress_interval;
+
+    progress_interval = setInterval(function() {
+        current_time = new Date();
+        progress_percentage = ((current_time - start_time) / 1000) / estimate * 100;
+
+        $('#dataProgress').attr('value', progress_percentage);
+        $('#dataProgress').html(progress_percentage.toFixed(2) + '% loaded');
+
+        if (progress_percentage >= 100) {
+            $('#dataProgress').attr('value', 100);
+            clearInterval(progress_interval);
+        }
+    }, 1);
+
+    $.get("{% url 'resources:data' %}", {
+        term: "{{ request.GET.term }}",
+        min_year: "{{ request.GET.min_year }}",
+        max_year: "{{ request.GET.max_year }}",
+    }).success(function(data) {
+        // Stop the progress bar.
+        clearInterval(progress_interval);
+        $('#dataProgress').hide();
+
+        dataset = [];
+        $.each(data, function(key, value) {
+            dataset.push({
+                label: key.toString(),
+                y: value,
+            })
+        });
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            zoomEnabled: true,
+            title: {
+                text: "Articles published about {{ request.GET.term }} per year",
+                fontSize: 14,
+            },
+            axisX: {
+                labelFontSize: 14,
+                titleFontSize: 14,
+            },
+            axisY: {
+                labelFontSize: 14,
+                titleFontSize: 14,
+            },
+            data: [
+                {
+                    /*** Change type "column" to "bar", "area", "line" or "pie"***/
+                    type: "column",
+                    dataPoints: dataset,
+                }
+            ]
+        });
+
+        chart.render();
+    });
+});
+</script>
 {% endblock primary_content %}

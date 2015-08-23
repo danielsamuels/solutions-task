@@ -5,7 +5,7 @@
     <title>Solutions Task</title>
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="/static/js/vendor/jquery.canvasjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.6.0/canvasjs.js"></script>
 
     <style type="text/css">
     body {
@@ -15,9 +15,45 @@
         font-size: 18px;
         color: #444;
         padding: 0 10px;
+        font-family: "Helvetica Neue", Helvetica, Arial;
     }
+
     h1, h2, h3 {
         line-height: 1.2;
+    }
+
+    input {
+        height: 50px;
+        display: inline-block;
+        border: 1px solid #333;
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .full-width {
+        width: 100%;
+        float: left;
+    }
+
+    .half-width input,
+    .full-width input {
+        width: 100%;
+    }
+
+    .half-width {
+        width: 50%;
+        float: left;
+    }
+
+    input[type=submit] {
+        width: 20%;
+        background-color: #fff;
+        transform: translateY(-1px);
+    }
+
+    label span {
+        display: block;
+
     }
     </style>
 </head>
