@@ -23,6 +23,7 @@
 {% if request.GET.term %}
 <progress max="100" value="0" id="dataProgress" style="width: 100%;"></progress>
 <div id="chartContainer" style="height: 700px; width: 100%;"></div>
+<p id="noResults" style="display: none;">There were no results for your search terms.  Please try adjusting them using the form above.</p>
 
 <script type="text/javascript">
 $(function() {
@@ -52,6 +53,14 @@ $(function() {
         clearInterval(progress_interval);
         $('#dataProgress').hide();
 
+        if (Object.keys(data).length === 0) {
+            // No data from this search.
+            $('#noResults').show();
+            $('#chartContainer').hide();
+            return
+        }
+
+        // Change the object into a dataset structure for our chart.
         dataset = [];
         $.each(data, function(key, value) {
             dataset.push({
@@ -76,7 +85,6 @@ $(function() {
             },
             data: [
                 {
-                    /*** Change type "column" to "bar", "area", "line" or "pie"***/
                     type: "column",
                     dataPoints: dataset,
                 }
