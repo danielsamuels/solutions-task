@@ -43,6 +43,19 @@ class NCBI(object):
             params=urllib.urlencode(params),
         )
 
+        # Check the min and max year values are valid integers.
+        if 'min_year' in kwargs:
+            try:
+                assert int(kwargs['min_year'])
+            except ValueError:
+                del kwargs['min_year']
+
+        if 'max_year' in kwargs:
+            try:
+                assert int(kwargs['max_year'])
+            except ValueError:
+                del kwargs['max_year']
+
         # Rather than pulling the actual documents, just use the search to pull
         # the counts. Pulling 3+ million records (for 'cancer') is way too
         # intensive for what this project needs.

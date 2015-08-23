@@ -48,18 +48,33 @@ class AJAXDataView(View):
         else:
             data = {}
 
-        if self.request.GET.get('min_year'):
+        # Check the min and max year values are valid integers.
+        request_data = self.request.GET.dict()
+
+        if 'min_year' in request_data:
+            try:
+                assert int(request_data['min_year'])
+            except ValueError:
+                del request_data['min_year']
+
+        if 'max_year' in request_data:
+            try:
+                assert int(request_data['max_year'])
+            except ValueError:
+                del request_data['max_year']
+
+        if request_data.get('min_year'):
             data = {
                 key: value
                 for key, value in data.iteritems()
-                if key >= int(self.request.GET['min_year'])
+                if key >= int(request_data['min_year'])
             }
 
-        if self.request.GET.get('max_year'):
+        if request_data.get('max_year'):
             data = {
                 key: value
                 for key, value in data.iteritems()
-                if key <= int(self.request.GET['max_year'])
+                if key <= int(request_data['max_year'])
             }
 
         return JsonResponse(data)
