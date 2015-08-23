@@ -13,7 +13,7 @@
     </label>
 
     <label class="half-width">
-        <span>From year:</span>
+        <span>To year:</span>
         <input type="number" name="max_year" min="1700" max="{% now 'Y' %}" value="{{ request.GET.max_year|default:2015 }}">
     </label>
 
