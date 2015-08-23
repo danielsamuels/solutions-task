@@ -11,7 +11,25 @@ import xmltodict
 
 class NCBI(object):
 
-    def search(self, term):
+    def estimate(self, term):
+        params = {
+            'type': 'pdat',
+            'retmax': 0,
+            'retstart': 0,
+            'term': term,
+        }
+
+        # Get the number of results for this search.
+        url = '{base_url}esearch.fcgi?db=pubmed&retmode=xml&{params}'.format(
+            base_url=settings.NCBI_BASE_URL,
+            params=urllib.urlencode(params),
+        )
+
+        response = requests.get(url)
+        parsed_data = xmltodict.parse(response.text)
+        return int(parsed_data['eSearchResult']['Count'])
+
+    def search(self, term, **kwargs):
         params = {
             'type': 'pdat',
             'retmax': 0,
