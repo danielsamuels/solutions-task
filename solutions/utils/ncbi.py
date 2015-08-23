@@ -58,6 +58,9 @@ class NCBI(object):
         while total_articles > 0:
             obj = None
 
+            if kwargs.get('min_year', False) and int(kwargs['min_year']) > year:
+                break
+
             # Is this year is the current year, how many days in to it are we?
             if year == now().year:
                 limiter += now().timetuple().tm_yday
@@ -95,14 +98,16 @@ class NCBI(object):
                     num_results=count - num_seen,
                 )
 
-                if year != now().year:
-                    obj.save()
+                obj.save()
 
             num_seen += obj.num_results
             total_articles -= obj.num_results
 
-            count_per_year[year] = obj.num_results
-
-            year -= 1
+            if kwargs.get('max_year', False) and int(kwargs['max_year']) < year:
+                year -= 1
+                continue
+            else:
+                year -= 1
+                count_per_year[year] = obj.num_results
 
         return count_per_year
