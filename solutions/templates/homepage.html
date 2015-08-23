@@ -20,6 +20,7 @@
     <input type="submit" value="Search">
 </form>
 
+{% if request.GET.term %}
 <progress max="100" value="0" id="dataProgress" style="width: 100%;"></progress>
 <div id="chartContainer" style="height: 700px; width: 100%;"></div>
 
@@ -86,4 +87,5 @@ $(function() {
     });
 });
 </script>
+{% endif %}
 {% endblock primary_content %}
